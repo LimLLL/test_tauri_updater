@@ -1,7 +1,15 @@
+use tauri::AppHandle;
+
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn greet(name: &str) -> String {
+    println!("Hello, {}!", name);
     format!("Hello, {}! You've been greeted from Rust!", name)
+}
+
+#[tauri::command]
+fn relaunch(app_handle: AppHandle) {
+    app_handle.restart()
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -10,7 +18,7 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![greet, relaunch])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
