@@ -1,7 +1,8 @@
-import { useState } from "react";
+import {useLayoutEffect, useState} from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
+import checkForAppUpdates from "./updater.tsx";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -11,6 +12,10 @@ function App() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
     setGreetMsg(await invoke("greet", { name }));
   }
+
+  useLayoutEffect(() => {
+    checkForAppUpdates(false).then(r => console.log(r));
+  }, [])
 
   return (
     <main className="container">
