@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "test_tauri_updater",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "identifier": "com.test.tauri.updater.app",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -38,7 +38,10 @@
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk0RkVBRTk0NEQwQUI0RUYKUldUdnRBcE5sSzcrbERoeHc4cFVwdG5yOFh1RzI1cmRVTFgrRGpCYXVxRi9hZGNjUXV6RXJKUzUK",
       "endpoints": [
         "https://github.com/LimLLL/test_tauri_updater/releases/latest/download/latest.json"
-      ]
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
     }
   }
 }
