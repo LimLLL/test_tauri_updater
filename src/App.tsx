@@ -3,10 +3,12 @@ import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 import checkForAppUpdates from "./updater.tsx";
+import {getVersion} from "@tauri-apps/api/app";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
+  const [version, setVersion] = useState("");
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -15,6 +17,7 @@ function App() {
 
   useLayoutEffect(() => {
     checkForAppUpdates(false).then(r => console.log(r));
+    getVersion().then(v => setVersion(v));
   }, [])
 
   return (
@@ -46,7 +49,7 @@ function App() {
           onChange={(e) => setName(e.currentTarget.value)}
           placeholder="Enter a name..."
         />
-        <button type="submit">Greet</button>
+        <button type="submit">Greet {version}</button>
       </form>
       <p>{greetMsg}</p>
     </main>
