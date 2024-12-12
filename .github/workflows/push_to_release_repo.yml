@@ -18,34 +18,32 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          path: source_code  # Checkout code into a specific directory
 
       - name: Checkout YaTai_Intelligence_Release Repo
         uses: actions/checkout@v3
         with:
           repository: LimLLL/YaTai_Intelligence_Release
           token: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
+          path: release_repo # Checkout release repo into a different directory
 
       - name: Install zip
         run: sudo apt-get install zip -y
 
       - name: Zip code
-        run: |
-            ls -alh
-            zip -r --password ${{ secrets.ZIP_PASSWORD }} compressed_code.zip .
+        working-directory: source_code # Change working directory to zip the correct code
+        run: zip -r --password ${{ secrets.ZIP_PASSWORD }} ../compressed_code.zip .
 
       - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
+        working-directory: release_repo # Change working directory to the release repo
         env:
           REPO_KEY: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
           USERNAME: github-actions[bot]
         run: |
-            # 打印一下当前有的文件
-            ls -alh
-            mv compressed_code.zip YaTai_Intelligence_Release/
-            cd YaTai_Intelligence_Release
+            mv ../compressed_code.zip .
             git config --local user.name "github-actions[bot]"
-            git config --local user.email "<>"
+            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"  # Use the correct email for github-actions[bot]
             git add compressed_code.zip
             git commit -m "Compress and push code"
             git push https://$USERNAME:$REPO_KEY@github.com/LimLLL/YaTai_Intelligence_Release.git
-
-
