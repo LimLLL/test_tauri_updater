@@ -21,7 +21,7 @@ jobs:
 
 
       - name: Checkout YaTai_Intelligence_Release Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           repository: LimLLL/YaTai_Intelligence_Release
           token: ${{secrets.PUSH_TOKEN}}
