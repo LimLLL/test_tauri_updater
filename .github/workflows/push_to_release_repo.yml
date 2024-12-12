@@ -2,14 +2,14 @@ name: Compress and Push to Release Repo
 
 on:
   workflow_dispatch:
-#  push:
-#    branches:
-#      - main
-#  pull_request:
-#    branches:
-#      - main
-#    types:
-#      - closed
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
 
 jobs:
   compress-and-push:
