@@ -2,37 +2,58 @@ name: Compress and Push to Release Repo
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-    types:
-      - closed
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    branches:
+#      - main
+#    types:
+#      - closed
 
 jobs:
   compress-and-push:
-    if: github.event.pull_request.merged == true || github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout YaTai_Intelligence
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Package code with password
-        working-directory: ./ # 将工作目录设置为你的仓库根目录
-        run: |
-          7z a -tzip -p${{ secrets.ZIP_PASSWORD }} -mem=AES256 secured_code.zip ./ 
-          # 将需要打包的文件和目录列在后面,注意这个压缩包不能放在当前目录下，会导致无限循环
-          # 例如：
-          # 7z a -tzip -p${{ secrets.ZIP_PASSWORD }} -mem=AES256 secured_code.zip ./dist ./src-tauri
+      - name: Install zip
+        run: sudo apt-get install zip -y
 
-      - name: Commit to YaTai_Intelligence_Release Repo
+      - name: Zip code
+        run: zip -r --password ${{ secrets.ZIP_PASSWORD }} compressed_code.zip .
+
+      - name: Push to repoB
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.YaTai_Intelligence_Release }}
-          repository: limlll/YaTai_Intelligence_Release # 替换为你的用户名
+          repository: limlll/Yatai_Intelligence_Release
           branch: main
+          directory: compressed_code.zip
+          github_token: ${{ secrets.YaTai_Intelligence_Release }}
           force: true
-#          directory: ./code #指定放压缩包的目录，这个目录必须和打包代码不在同一个目录下
+#  compress-and-push:
+#    if: github.event.pull_request.merged == true || github.event_name == 'push'
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout YaTai_Intelligence
+#        uses: actions/checkout@v4
+#
+#      - name: Package code with password
+#        working-directory: ./ # 将工作目录设置为你的仓库根目录
+#        run: |
+#          7z a -tzip -p${{ secrets.ZIP_PASSWORD }} -mem=AES256 secured_code.zip ./
+#          # 将需要打包的文件和目录列在后面,注意这个压缩包不能放在当前目录下，会导致无限循环
+#          # 例如：
+#          # 7z a -tzip -p${{ secrets.ZIP_PASSWORD }} -mem=AES256 secured_code.zip ./dist ./src-tauri
+#
+#      - name: Commit to YaTai_Intelligence_Release Repo
+#        uses: ad-m/github-push-action@master
+#        with:
+#          github_token: ${{ secrets.YaTai_Intelligence_Release }}
+#          repository: limlll/YaTai_Intelligence_Release # 替换为你的用户名
+#          branch: main
+#          force: true
+##          directory: ./code #指定放压缩包的目录，这个目录必须和打包代码不在同一个目录下
