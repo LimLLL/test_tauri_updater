@@ -32,7 +32,9 @@ jobs:
         run: sudo apt-get install zip -y
 
       - name: Zip code
-        run: zip -r --password ${{ secrets.ZIP_PASSWORD }} compressed_code.zip YaTai_Intelligence
+        run: |
+        ls -alh
+        zip -r --password ${{ secrets.ZIP_PASSWORD }} compressed_code.zip YaTai_Intelligence
 
       - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
         env:
