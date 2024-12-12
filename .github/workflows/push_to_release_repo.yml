@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: LimLLL/YaTai_Intelligence_Release
-          token: ${{secrets.PUSH_TOKEN}}
+          token: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
 
       - name: Install zip
         run: sudo apt-get install zip -y
