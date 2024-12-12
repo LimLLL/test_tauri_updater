@@ -33,8 +33,8 @@ jobs:
 
       - name: Zip code
         run: |
-        ls -alh
-        zip -r --password ${{ secrets.ZIP_PASSWORD }} compressed_code.zip YaTai_Intelligence
+            ls -alh
+            zip -r --password ${{ secrets.ZIP_PASSWORD }} compressed_code.zip YaTai_Intelligence
 
       - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
         env:
