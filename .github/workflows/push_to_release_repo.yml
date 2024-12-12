@@ -18,10 +18,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          path: YaTai_Intelligence
 
 
       - name: Checkout YaTai_Intelligence_Release Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: LimLLL/YaTai_Intelligence_Release
           token: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
@@ -30,13 +32,15 @@ jobs:
         run: sudo apt-get install zip -y
 
       - name: Zip code
-        run: zip -r --password ${{ secrets.ZIP_PASSWORD }} compressed_code.zip .
+        run: zip -r --password ${{ secrets.ZIP_PASSWORD }} compressed_code.zip YaTai_Intelligence
 
       - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
         env:
           REPO_KEY: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
           USERNAME: github-actions[bot]
         run: |
+            # 打印一下当前有的文件
+            ls -alh
             mv compressed_code.zip YaTai_Intelligence_Release/
             cd YaTai_Intelligence_Release
             git config --local user.name "github-actions[bot]"
