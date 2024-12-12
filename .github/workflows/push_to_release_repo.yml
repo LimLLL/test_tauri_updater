@@ -35,4 +35,4 @@ jobs:
           repository: limlll/YaTai_Intelligence_Release # 替换为你的用户名
           branch: main
           force: true
-          directory: ./code #指定放压缩包的目录，这个目录必须和打包代码不在同一个目录下
+#          directory: ./code #指定放压缩包的目录，这个目录必须和打包代码不在同一个目录下
