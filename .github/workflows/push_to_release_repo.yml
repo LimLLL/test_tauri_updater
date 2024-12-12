@@ -2,9 +2,9 @@ name: Compress and Push to Release Repo
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
   pull_request:
     branches:
       - main
@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout YaTai_Intelligence
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Package code with password
         working-directory: ./ # 将工作目录设置为你的仓库根目录
@@ -36,4 +36,3 @@ jobs:
           branch: main
           force: true
           directory: ./code #指定放压缩包的目录，这个目录必须和打包代码不在同一个目录下
-          commit_message: "Update secured code"
