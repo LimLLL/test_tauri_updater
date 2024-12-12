@@ -30,7 +30,7 @@ jobs:
         with:
           repository: limlll/Yatai_Intelligence_Release
           branch: main
-          directory: compressed_code.zip
+#          directory: compressed_code.zip
           github_token: ${{ secrets.YaTai_Intelligence_Release }}
           force: true
 #  compress-and-push:
