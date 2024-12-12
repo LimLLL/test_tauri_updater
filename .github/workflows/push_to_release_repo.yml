@@ -28,7 +28,7 @@ jobs:
       - name: Push to repoB
         uses: ad-m/github-push-action@master
         with:
-          repository: limlll/Yatai_Intelligence_Release
+          repository: LimLLL/Yatai_Intelligence_Release
           branch: main
           github_token: ${{ secrets.YATAI_INTELLIGENCE_RELEASE }}
           force: true
