@@ -18,9 +18,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          path: YaTai_Intelligence
-
 
       - name: Checkout YaTai_Intelligence_Release Repo
         uses: actions/checkout@v3
@@ -34,7 +31,7 @@ jobs:
       - name: Zip code
         run: |
             ls -alh
-            zip -r --password ${{ secrets.ZIP_PASSWORD }} compressed_code.zip YaTai_Intelligence
+            zip -r --password ${{ secrets.ZIP_PASSWORD }} compressed_code.zip .
 
       - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
         env:
