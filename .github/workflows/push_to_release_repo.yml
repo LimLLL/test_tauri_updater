@@ -2,9 +2,9 @@ name: Compress and Push to Release Repo
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
   pull_request:
     branches:
       - main
