@@ -130,7 +130,7 @@ impl PerformanceEvaluationCaseDataState {
 
         let response = client
             .post(
-                "http://server.bhzh.tech:48181/query/case/library/of/budget/performance/management",
+                "http://www.baidu.com",
             )
             .json(&body_payload)
             .send()
@@ -307,7 +307,7 @@ impl PerformanceEvaluationCaseDataState {
         });
 
         let response = client
-            .post("http://server.bhzh.tech:48181/query/case/library/of/budget/performance/management/template")
+            .post("http://www.baidu.com")
             .json(&body_payload)
             .send()
             .await?;
