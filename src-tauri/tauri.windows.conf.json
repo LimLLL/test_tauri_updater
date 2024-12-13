@@ -38,7 +38,10 @@
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk0RkVBRTk0NEQwQUI0RUYKUldUdnRBcE5sSzcrbERoeHc4cFVwdG5yOFh1RzI1cmRVTFgrRGpCYXVxRi9hZGNjUXV6RXJKUzUK",
       "endpoints": [
         "https://ghproxy.uk.arm.useforall.com/https://github.com/LimLLL/YaTai_Intelligence_Release/releases/latest/download/latest.json"
-      ]
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
     }
   }
 }
