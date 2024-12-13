@@ -45,7 +45,7 @@ fn main() {
     tauri_build::build();
 }
 
-
+#[cfg(all(target_os = "windows"))]
 fn download_and_extract(url: &str, lib_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
     // Download ZIP file
     let response = reqwest::blocking::get(url)?;

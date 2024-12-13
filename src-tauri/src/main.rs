@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    test_tauri_updater_lib::run()
+    bohua_integration_frontend_tauri_lib::run()
 }
