@@ -13,7 +13,7 @@
   "app": {
     "windows": [
       {
-        "title": "测试",
+        "title": "test",
         "width": 800,
         "height": 600
       }
