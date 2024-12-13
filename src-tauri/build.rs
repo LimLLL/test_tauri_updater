@@ -1,6 +1,8 @@
-use std::fs;
-use std::io::Cursor;
 use std::path::Path;
+use reqwest;
+use zip;
+use std::io::Cursor;
+use std::{fs};
 
 fn main() {
 
@@ -16,7 +18,7 @@ fn main() {
 
     #[cfg(target_os = "windows")]
     {
-        let out_dir = env::current_dir().unwrap();
+        let out_dir = std::env::current_dir().unwrap();
         let lib_path = if cfg!(target_arch = "x86_64") {
             Path::new(&out_dir).join("lib/duckdb/windows_x86_64")
         } else if cfg!(target_arch = "aarch64") {

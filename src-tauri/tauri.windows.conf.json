@@ -31,7 +31,15 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "createUpdaterArtifacts": true
+    "createUpdaterArtifacts": true,
+    "windows": {
+      "webviewInstallMode": {
+        "type": "embedBootstrapper"
+      }
+    },
+    "resources": {
+      "./lib/windows_resource/*": "./"
+    }
   },
   "plugins": {
     "updater": {
