@@ -77,6 +77,7 @@ jobs:
           prerelease: false
           args: ${{ matrix.args }}
           updaterJsonPreferNsis: true
+          appName: 'test_tauri_updater'
 
   modify-latest-json:
     needs: unpack-and-publish
