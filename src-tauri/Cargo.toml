@@ -20,15 +20,22 @@ reqwest = {version = "0.12.9", features = ["blocking"] }
 zip = "2.2.1"
 
 [dependencies]
-tauri = { version = "2", features = [] }
+tauri = { version = "2", features = ["devtools"] }
 tauri-plugin-shell = "2"
+duckdb = { version = "1.1.1", features = ["bundled", "serde_json", "chrono"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+tauri-plugin-http = { version = "2", features = ["unsafe-headers"] }
+thiserror = "1.0"
+tokio = "1.41.0"
+log = "0.4.22"
+tauri-plugin-clipboard-manager = "2.0.2"
+tauri-plugin-process = "2"
 tauri-plugin-dialog = "2"
-duckdb = { version = "1.1.1", features = ["bundled", "serde_json", "chrono"] }
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-updater = "2"
 
-[target.'cfg(target_os = "windows")'.dependencies]
+[target.'cfg(windows)'.dependencies]
 duckdb = { version = "1.1.1", features = ["serde_json", "chrono"] }
+
