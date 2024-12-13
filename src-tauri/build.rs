@@ -39,7 +39,10 @@ fn main() {
 
         println!("cargo:rustc-link-search=native={}", lib_path.display());
         println!("cargo:rustc-link-lib=static=duckdb"); // 根据需要也可以使用静态链接
+        println!("cargo:rustc-link-flag=/NODEFAULTLIB:libduckdb.lib");
+
     }
+
 
     // 允许 Tauri 运行其构建过程
     tauri_build::build();
