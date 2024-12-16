@@ -9,6 +9,8 @@ function App() {
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
   const [version, setVersion] = useState("");
+  const [downloaded, setDownloaded] = useState<number>(0);
+  const [contentLength, setContentLength] = useState<number>(0);
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -16,7 +18,7 @@ function App() {
   }
 
   useLayoutEffect(() => {
-    checkForAppUpdates(false).then(r => console.log(r));
+    checkForAppUpdates(setDownloaded, setContentLength).then(r => console.log(r));
     getVersion().then(v => setVersion(v));
   }, [])
 
@@ -50,6 +52,9 @@ function App() {
           placeholder="Enter a name..."
         />
         <button type="submit">Greet {version}</button>
+        <p>
+          {Math.round((downloaded / contentLength) * 100)}% downloaded
+        </p>
       </form>
       <p>{greetMsg}</p>
     </main>
