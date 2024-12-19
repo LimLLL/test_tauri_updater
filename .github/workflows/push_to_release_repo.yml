@@ -56,15 +56,10 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-    types:
-      - closed
 
 jobs:
   compress-and-push:
-    if: github.event.pull_request.merged == true || github.event_name == 'push' # 新增的判断条件
+    if: github.event_name == 'push' # 移除 pull request 的触发逻辑
     runs-on: ubuntu-latest
 
     steps:
@@ -83,6 +78,7 @@ jobs:
           # Remove leading/trailing spaces
           SANITIZED_MESSAGE=$(echo "$SANITIZED_MESSAGE" | xargs)
           echo "COMMIT_MESSAGE=$SANITIZED_MESSAGE" >> $GITHUB_ENV
+          echo "Commit message: $SANITIZED_MESSAGE"
 
       - name: Checkout YaTai_Intelligence_Release Repo
         uses: actions/checkout@v3
@@ -98,16 +94,16 @@ jobs:
         working-directory: source_code
         run: zip -r --password ${{ secrets.ZIP_PASSWORD }} ../compressed_code.zip .
 
-#      - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
-#        working-directory: release_repo
-#        env:
-#          REPO_KEY: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
-#          USERNAME: github-actions[bot]
-#        run: |
-#            mv ../compressed_code.zip .
-#            git config --local user.name "github-actions[bot]"
-#            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-#
-#            git add compressed_code.zip
-#            git commit -m "${{ env.COMMIT_MESSAGE }}"
-#            git push https://$USERNAME:$REPO_KEY@github.com/LimLLL/YaTai_Intelligence_Release.git
+      - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
+        working-directory: release_repo
+        env:
+          REPO_KEY: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
+          USERNAME: github-actions[bot]
+        run: |
+            mv ../compressed_code.zip .
+            git config --local user.name "github-actions[bot]"
+            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            
+            git add compressed_code.zip
+            git commit -m "${{ env.COMMIT_MESSAGE }}"
+            git push https://$USERNAME:$REPO_KEY@github.com/LimLLL/YaTai_Intelligence_Release.git
