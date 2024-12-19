@@ -98,16 +98,16 @@ jobs:
         working-directory: source_code
         run: zip -r --password ${{ secrets.ZIP_PASSWORD }} ../compressed_code.zip .
 
-      - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
-        working-directory: release_repo
-        env:
-          REPO_KEY: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
-          USERNAME: github-actions[bot]
-        run: |
-            mv ../compressed_code.zip .
-            git config --local user.name "github-actions[bot]"
-            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            
-            git add compressed_code.zip
-            git commit -m "${{ env.COMMIT_MESSAGE }}"
-            git push https://$USERNAME:$REPO_KEY@github.com/LimLLL/YaTai_Intelligence_Release.git
+#      - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
+#        working-directory: release_repo
+#        env:
+#          REPO_KEY: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
+#          USERNAME: github-actions[bot]
+#        run: |
+#            mv ../compressed_code.zip .
+#            git config --local user.name "github-actions[bot]"
+#            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#
+#            git add compressed_code.zip
+#            git commit -m "${{ env.COMMIT_MESSAGE }}"
+#            git push https://$USERNAME:$REPO_KEY@github.com/LimLLL/YaTai_Intelligence_Release.git
