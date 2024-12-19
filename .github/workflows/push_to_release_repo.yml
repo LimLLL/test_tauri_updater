@@ -1,10 +1,61 @@
+#name: Compress and Push to Release Repo
+#
+#on:
+#  workflow_dispatch:
+##  push:
+##    branches:
+##      - main
+#  pull_request:
+#    branches:
+#      - main
+#    types:
+#      - closed
+#
+#jobs:
+#  compress-and-push:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#        with:
+#          path: source_code  # Checkout code into a specific directory
+#
+#      - name: Checkout YaTai_Intelligence_Release Repo
+#        uses: actions/checkout@v3
+#        with:
+#          repository: LimLLL/YaTai_Intelligence_Release
+#          token: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
+#          path: release_repo # Checkout release repo into a different directory
+#
+#      - name: Install zip
+#        run: sudo apt-get install zip -y
+#
+#      - name: Zip code
+#        working-directory: source_code # Change working directory to zip the correct code
+#        run: zip -r --password ${{ secrets.ZIP_PASSWORD }} ../compressed_code.zip .
+#
+#      - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
+#        working-directory: release_repo # Change working directory to the release repo
+#        env:
+#          REPO_KEY: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
+#          USERNAME: github-actions[bot]
+#        run: |
+#            mv ../compressed_code.zip .
+#            git config --local user.name "github-actions[bot]"
+#            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"  # Use the correct email for github-actions[bot]
+#            git add compressed_code.zip
+#            git commit -m "Compress and push code"
+#            git push https://$USERNAME:$REPO_KEY@github.com/LimLLL/YaTai_Intelligence_Release.git
+
+
 name: Compress and Push to Release Repo
 
 on:
   workflow_dispatch:
-#  push:
-#    branches:
-#      - main
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -13,37 +64,50 @@ on:
 
 jobs:
   compress-and-push:
+    if: github.event.pull_request.merged == true || github.event_name == 'push' # 新增的判断条件
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          path: source_code  # Checkout code into a specific directory
+          path: source_code
+
+      - name: Get and sanitize commit message
+        id: get_commit_message
+        working-directory: source_code
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          # Replace newlines with spaces and remove carriage returns
+          SANITIZED_MESSAGE=$(echo "$COMMIT_MESSAGE" | tr '\n\r' '  ')
+          # Remove leading/trailing spaces
+          SANITIZED_MESSAGE=$(echo "$SANITIZED_MESSAGE" | xargs)
+          echo "COMMIT_MESSAGE=$SANITIZED_MESSAGE" >> $GITHUB_ENV
 
       - name: Checkout YaTai_Intelligence_Release Repo
         uses: actions/checkout@v3
         with:
           repository: LimLLL/YaTai_Intelligence_Release
           token: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
-          path: release_repo # Checkout release repo into a different directory
+          path: release_repo
 
       - name: Install zip
         run: sudo apt-get install zip -y
 
       - name: Zip code
-        working-directory: source_code # Change working directory to zip the correct code
+        working-directory: source_code
         run: zip -r --password ${{ secrets.ZIP_PASSWORD }} ../compressed_code.zip .
 
-      - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
-        working-directory: release_repo # Change working directory to the release repo
-        env:
-          REPO_KEY: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
-          USERNAME: github-actions[bot]
-        run: |
-            mv ../compressed_code.zip .
-            git config --local user.name "github-actions[bot]"
-            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"  # Use the correct email for github-actions[bot]
-            git add compressed_code.zip
-            git commit -m "Compress and push code"
-            git push https://$USERNAME:$REPO_KEY@github.com/LimLLL/YaTai_Intelligence_Release.git
+#      - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
+#        working-directory: release_repo
+#        env:
+#          REPO_KEY: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
+#          USERNAME: github-actions[bot]
+#        run: |
+#            mv ../compressed_code.zip .
+#            git config --local user.name "github-actions[bot]"
+#            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#
+#            git add compressed_code.zip
+#            git commit -m "${{ env.COMMIT_MESSAGE }}"
+#            git push https://$USERNAME:$REPO_KEY@github.com/LimLLL/YaTai_Intelligence_Release.git
