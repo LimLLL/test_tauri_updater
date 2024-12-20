@@ -70,6 +70,7 @@ jobs:
 
       - name: Get Pull Request Description
         id: get_pr_description
+        working-directory: source_code
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
