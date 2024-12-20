@@ -2,9 +2,9 @@ name: "Unpack and Publish"
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
 
 jobs:
   unpack-and-publish:
