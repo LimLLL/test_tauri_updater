@@ -75,10 +75,10 @@ jobs:
           GH_TOKEN: ${{ secrets.YATAI_INTELLIGENCE_RELEASE }}
         run: |
           PR_DESCRIPTION=$(gh pr list --state merged --json body -q '.[0].body')
-          # Replace multiple newlines with a single newline
-          SANITIZED_DESCRIPTION=$(echo "$PR_DESCRIPTION" | sed ':a;N;$!ba;s/\n\+/\n/g')
-          # Replace the single newline and carriage return with a semicolon
-          SANITIZED_DESCRIPTION=$(echo "$SANITIZED_DESCRIPTION" | tr '\n\r' ';')
+          # Replace newlines and carriage returns with semicolons
+          SANITIZED_DESCRIPTION=$(echo "$PR_DESCRIPTION" | tr '\n\r' ';')
+          # Collapse consecutive semicolons into a single semicolon
+          SANITIZED_DESCRIPTION=$(echo "$SANITIZED_DESCRIPTION" | sed 's/;\+/;/g')
           # Remove leading/trailing spaces
           SANITIZED_DESCRIPTION=$(echo "$SANITIZED_DESCRIPTION" | xargs)
           echo "PR_DESCRIPTION=$SANITIZED_DESCRIPTION" >> $GITHUB_ENV
