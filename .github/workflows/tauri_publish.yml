@@ -71,8 +71,6 @@ jobs:
           RELEASE_BODY=$(cat releaseBody.txt)
           # Replace semicolons with newlines
           SANITIZED_BODY=$(echo "$RELEASE_BODY" | tr ';' '\n')
-          # Remove leading/trailing spaces (not strictly necessary)
-          SANITIZED_BODY=$(echo "$SANITIZED_BODY" | xargs)
           echo "RELEASE_BODY<<EOF" >> "$GITHUB_ENV"
           echo "$SANITIZED_BODY" >> "$GITHUB_ENV"
           echo "EOF" >> "$GITHUB_ENV"
