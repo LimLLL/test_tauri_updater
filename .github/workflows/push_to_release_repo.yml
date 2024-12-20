@@ -74,7 +74,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_DESCRIPTION=$(gh pr view --json body -q .body)
+          PR_DESCRIPTION=$(gh pr list --state merged --json body -q '.[0].body')
           # Replace newlines with spaces and remove carriage returns
           # SANITIZED_DESCRIPTION=$(echo "$PR_DESCRIPTION" | tr '\n\r' '  ')
           SANITIZED_DESCRIPTION=$(echo "$PR_DESCRIPTION")
