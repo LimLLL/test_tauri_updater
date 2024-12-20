@@ -71,17 +71,15 @@ jobs:
       - name: Get Pull Request Description
         id: get_pr_description
         run: |
-          PR_NUMBER=$(echo ${{ github.event.pull_request.number }})
-          echo "PR_NUMBER: $PR_NUMBER"
-          PR_INFO=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER")
-          PR_DESCRIPTION=$(echo "$PR_INFO" | jq -r '.body')
-          # 将换行符替换为空格
-          SANITIZED_DESCRIPTION=$(echo "$PR_DESCRIPTION" | tr '\n\r' '  ')
-          # 删除前导和尾随空格
+          PR_DESCRIPTION=$(gh pr view --json body -q .body)
+          # Replace newlines with spaces and remove carriage returns
+          # SANITIZED_DESCRIPTION=$(echo "$PR_DESCRIPTION" | tr '\n\r' '  ')
+          SANITIZED_DESCRIPTION=$(echo "$PR_DESCRIPTION")
+          # Remove leading/trailing spaces
           SANITIZED_DESCRIPTION=$(echo "$SANITIZED_DESCRIPTION" | xargs)
-          
           echo "COMMIT_MESSAGE=$SANITIZED_DESCRIPTION" >> $GITHUB_ENV
-          echo "Pull Request Description: $SANITIZED_DESCRIPTION"
+          echo "Pull Request description: $SANITIZED_DESCRIPTION"
+          
 
       - name: Fallback to Commit Message if no PR Description
         # 判断是否有$SANITIZED_DESCRIPTION，如果没有，就代表上面的步骤没有获取到PR的描述，那么就使用commit message
