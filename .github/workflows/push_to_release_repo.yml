@@ -68,7 +68,24 @@ jobs:
         with:
           path: source_code
 
-      - name: Get and sanitize commit message
+      - name: Get Pull Request Description
+        id: get_pr_description
+        if: github.event.pull_request
+        run: |
+          PR_NUMBER=$(echo ${{ github.event.pull_request.number }})
+          echo "PR_NUMBER: $PR_NUMBER"
+          PR_INFO=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER")
+          PR_DESCRIPTION=$(echo "$PR_INFO" | jq -r '.body')
+          # 将换行符替换为空格
+          SANITIZED_DESCRIPTION=$(echo "$PR_DESCRIPTION" | tr '\n\r' '  ')
+          # 删除前导和尾随空格
+          SANITIZED_DESCRIPTION=$(echo "$SANITIZED_DESCRIPTION" | xargs)
+
+          echo "PR_DESCRIPTION=$SANITIZED_DESCRIPTION" >> $GITHUB_ENV
+          echo "Pull Request Description: $SANITIZED_DESCRIPTION"
+
+      - name: Fallback to Commit Message if no PR Description
+        if: ${{ ! github.event.pull_request }}
         id: get_commit_message
         working-directory: source_code
         run: |
@@ -80,30 +97,37 @@ jobs:
           echo "COMMIT_MESSAGE=$SANITIZED_MESSAGE" >> $GITHUB_ENV
           echo "Commit message: $SANITIZED_MESSAGE"
 
-      - name: Checkout YaTai_Intelligence_Release Repo
-        uses: actions/checkout@v3
-        with:
-          repository: LimLLL/YaTai_Intelligence_Release
-          token: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
-          path: release_repo
 
-      - name: Install zip
-        run: sudo apt-get install zip -y
+#      - name: Checkout YaTai_Intelligence_Release Repo
+#        uses: actions/checkout@v3
+#        with:
+#          repository: LimLLL/YaTai_Intelligence_Release
+#          token: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
+#          path: release_repo
 
-      - name: Zip code
-        working-directory: source_code
-        run: zip -r --password ${{ secrets.ZIP_PASSWORD }} ../compressed_code.zip .
+#      - name: Install zip
+#        run: sudo apt-get install zip -y
+#
+#      - name: Zip code
+#        working-directory: source_code
+#        run: zip -r --password ${{ secrets.ZIP_PASSWORD }} ../compressed_code.zip .
 
-      - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
-        working-directory: release_repo
-        env:
-          REPO_KEY: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
-          USERNAME: github-actions[bot]
-        run: |
-            mv ../compressed_code.zip .
-            git config --local user.name "github-actions[bot]"
-            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            
-            git add compressed_code.zip
-            git commit -m "${{ env.COMMIT_MESSAGE }}"
-            git push https://$USERNAME:$REPO_KEY@github.com/LimLLL/YaTai_Intelligence_Release.git
+#      - name: Push compressed_code.zip to LimLLL/YaTai_Intelligence_Release Repo
+#        working-directory: release_repo
+#        env:
+#          REPO_KEY: ${{secrets.YATAI_INTELLIGENCE_RELEASE}}
+#          USERNAME: github-actions[bot]
+#        run: |
+#            mv ../compressed_code.zip .
+#            git config --local user.name "github-actions[bot]"
+#            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#
+#            if [[ -z "${{ env.PR_DESCRIPTION }}" ]]; then
+#                git add compressed_code.zip
+#                git commit -m "${{ env.COMMIT_MESSAGE }}"
+#            else
+#                git add compressed_code.zip
+#                git commit -m "${{ env.PR_DESCRIPTION }}"
+#            fi
+#
+#            git push https://$USERNAME:$REPO_KEY@github.com/LimLLL/YaTai_Intelligence_Release.git
