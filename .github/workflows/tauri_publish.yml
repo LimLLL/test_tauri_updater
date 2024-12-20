@@ -2,9 +2,9 @@ name: "Unpack and Publish"
 
 on:
   workflow_dispatch:
-#  push:
-#    branches:
-#      - main
+  push:
+    branches:
+      - main
 
 jobs:
   unpack-and-publish:
@@ -16,12 +16,12 @@ jobs:
         include:
           - platform: 'macos-latest' # for Arm based macs (M1 and above).
             args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest' # for Intel based macs.
-            args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-22.04'
-            args: ''
-          - platform: 'windows-latest'
-            args: '--config src-tauri/tauri.windows.conf.json'
+#          - platform: 'macos-latest' # for Intel based macs.
+#            args: '--target x86_64-apple-darwin'
+#          - platform: 'ubuntu-22.04'
+#            args: ''
+#          - platform: 'windows-latest'
+#            args: '--config src-tauri/tauri.windows.conf.json'
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -65,6 +65,19 @@ jobs:
       - name: Install frontend dependencies
         run: npm install
 
+      - name: Read and Sanitize Release Body
+        id: sanitize_release_body
+        run: |
+          RELEASE_BODY=$(cat releaseBody.txt)
+          # Replace semicolons with newlines
+          SANITIZED_BODY=$(echo "$RELEASE_BODY" | tr ';' '\n')
+          # Remove leading/trailing spaces (not strictly necessary)
+          SANITIZED_BODY=$(echo "$SANITIZED_BODY" | xargs)
+          echo "RELEASE_BODY<<EOF" >> "$GITHUB_ENV"
+          echo "$SANITIZED_BODY" >> "$GITHUB_ENV"
+          echo "EOF" >> "$GITHUB_ENV"
+          echo "Sanitized release body: $SANITIZED_BODY"
+
       - uses: LimLLL/tauri-action-renameArtifacts@v0.5.18
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,7 +86,7 @@ jobs:
         with:
           tagName: app-v__VERSION__
           releaseName: 'App v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
+          releaseBody: ${{ env.RELEASE_BODY }}
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
