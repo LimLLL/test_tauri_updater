@@ -76,8 +76,7 @@ jobs:
         run: |
           PR_DESCRIPTION=$(gh pr list --state merged --json body -q '.[0].body')
           # Replace newlines with spaces and remove carriage returns
-          # SANITIZED_DESCRIPTION=$(echo "$PR_DESCRIPTION" | tr '\n\r' '  ')
-          SANITIZED_DESCRIPTION=$(echo "$PR_DESCRIPTION")
+          SANITIZED_DESCRIPTION=$(echo "$PR_DESCRIPTION" | tr '\n\r' '  ')
           # Remove leading/trailing spaces
           SANITIZED_DESCRIPTION=$(echo "$SANITIZED_DESCRIPTION" | xargs)
           echo "COMMIT_MESSAGE=$SANITIZED_DESCRIPTION" >> $GITHUB_ENV
@@ -86,7 +85,7 @@ jobs:
 
       - name: Fallback to Commit Message if no PR Description
         # 判断是否有$SANITIZED_DESCRIPTION，如果没有，就代表上面的步骤没有获取到PR的描述，那么就使用commit message
-        if: env.COMMIT_MESSAGE == ''
+        # if: env.COMMIT_MESSAGE == ''
         id: get_commit_message
         working-directory: source_code
         run: |
