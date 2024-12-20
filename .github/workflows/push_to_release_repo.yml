@@ -73,6 +73,7 @@ jobs:
         working-directory: source_code
         env:
           GH_TOKEN: ${{ secrets.YATAI_INTELLIGENCE_RELEASE }}
+
         run: |
           PR_DESCRIPTION=$(gh pr list --state merged --json body -q '.[0].body')
           # Replace newlines with spaces and remove carriage returns
