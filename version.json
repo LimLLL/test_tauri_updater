@@ -1,17 +1,17 @@
 [
   {
     "version": "0.2.4",
-    "notes": "# Version 0.2.3\n - Update Body 5\n - Update Body 6",
+    "notes": "## Version 0.2.4\n - Update Body 5\n - Update Body 6",
     "time": "2024-12-23 12:00:00"
   },
   {
     "version": "0.2.3",
-    "notes": "# Version 0.2.4\n - Update Body 5\n - Update Body 6",
+    "notes": "## Version 0.2.3\n - Update Body 5\n - Update Body 6",
     "time": "2024-12-22 12:00:00"
   },
   {
     "version": "0.2.2",
-    "notes": "# Version 0.2.2\n - Update Body 1\n - Update Body 2",
+    "notes": "## Version 0.2.2\n - Update Body 1\n - Update Body 2",
     "time": "2024-12-20 12:00:00"
   }
 ]
