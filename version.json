@@ -1,17 +1,17 @@
 [
   {
-    "version": "0.2.4",
-    "notes": "# Version 0.2.4\n - Update Body 5\n - Update Body 6",
-    "time": "2024-12-23 12:00:00"
-  },
-  {
-    "version": "0.2.3",
-    "notes": "# Version 0.2.3\n - Update Body 5\n - Update Body 6",
-    "time": "2024-12-22 12:00:00"
-  },
-  {
     "version": "0.2.2",
-    "notes": "# Version 0.2.2\n - Update Body 1\n - Update Body 2",
+    "notes": "# Version 0.2.2\n - 修复：登录页面一直处于检查更新\n - 优化：自动生成更新信息",
     "time": "2024-12-20 12:00:00"
+  },
+  {
+    "version": "0.2.1",
+    "notes": "# Version 0.2.1\n - 重构：项目支出绩效重构\n - 优化：表格性能优化\n - 功能：PDF组件完善\n - 杂项：表格组件版本升级",
+    "time": "2024-12-19 12:00:00"
+  },
+  {
+    "version": "0.1.0",
+    "notes": "# Version 0.1.0\n - 初步完成app界面及预算计算案例库查询",
+    "time": "2024-12-16 12:00:00"
   }
 ]
